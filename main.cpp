@@ -25,7 +25,30 @@ typedef struct Node {
 }Node;
 
 int calcEdgeValue(Node node1, Node node2){
-    return 0;
+    unordered_set<string> n1tags(node1.tags.begin(), node1.tags.end());
+    int commons = 0, node2t = 0, node1t = 0;
+    for(string s : node2.tags) {
+    	if(n1tags.contains(s)) {
+    		commons++;
+    	} else {
+    		node2t++;
+    	}
+    }
+    node1t = node1.tags.size() - commons;
+
+    if(node1t < commons) {
+    	if(node1t < node2t) {
+    		return node1t;
+    	} else {
+    		return node2t;
+    	}
+    } else {
+    	if(commons < node2t) {
+    		return commons;
+    	} else {
+    		return node2t;
+    	}
+    }
 }
 
 int main(){
