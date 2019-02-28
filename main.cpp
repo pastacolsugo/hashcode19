@@ -51,10 +51,67 @@ int calcEdgeValue(Node node1, Node node2){
     }
 }
 
+vector<Image> input(){
+    int n;
+
+    cin >> n;
+
+    vector<Image> images(n);
+
+    srand(time(NULL));
+
+    for (int i = 0; i < n; i++) {
+        cin >> orientation;
+        cin >> nTag;
+
+        images[i].index = i;
+        images[i].isVertical = (orientation == 'V');
+        
+        for (int j = 0; j < nTag; j++) {
+            string tag;
+            cin >> tag;
+            images[i].tags.insert(tag);
+        }
+    }
+    return images;
+}
+
+vector <Node> pairVerticalImages (vector <Image> v) {
+    if (v.size() % 2 == 1) {
+        v.pop_back();
+    }
+
+    random_shuffle(v.begin(), v.end());
+
+    vector <Node> res(v.size() / 2);
+
+    for (int i = 0; i < v.size(); i += 2) {
+        res[i].name.push_back(v[i].index);
+        res[i].name.push_back(v[i+1].index);
+
+        res[i].tags = v[i].tags;
+        res[i].tags.insert(v[i+1].tags.begin(), v[i+1].tags.end());
+    }
+    return move(res);
+}
+
 int main(){
 
     /*input*/
-    vector<Node> allOriz;//=blabla
+    vector<Image> inp = input();
+    vector<Image> vert;
+    vector<Image> oriz;
+    for(auto i : inp){
+        if(i.isVertical()){
+            vert.push_back(i);
+        } else {
+            oriz.push_back(i);
+        }
+    }
+
+    vector<Node> allOriz = pairVerticalImages(vert);
+    for(auto i : oriz) allOriz.push_back({{i.index}, i.tags, {}, 0});
+
     graph.resize(allOriz.size());
     vector<pair<int, pair<int, int> > >edges; // weight, {from, to}
     for(int i = 0; i < n; i++){
