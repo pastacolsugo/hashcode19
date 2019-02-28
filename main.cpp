@@ -14,12 +14,12 @@ vector<vector<pair, pair> > graph;
 struct Image {
     int index;
     bool isVertical;
-    vector <string> tags;
+    unordered_set <string> tags;
 };
 
 typedef struct Node {
     vector<int> name; // "0", "1", "2 3", "4"
-    vector<string> tags;
+    unordered_set<string> tags;
     priority_queue<pair<int, int> > edges; //edgeValue, to
     int links;
 }Node;

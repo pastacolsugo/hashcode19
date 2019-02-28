@@ -6,21 +6,19 @@
 #include <queue>
 #include <time.h>
 #include <stdlib.h>
+#include <unordered_set>
 
 using namespace std;
 
 struct Image {
 	int index;
 	bool isVertical;
-	vector <string> tags;
+	unordered_set <string> tags;
 };
 
-struct Slide {
-	bool isSingle;
-	Image first, second;
-}
+typedef Slide Image;
 
-vector <Image> solution;
+vector <Slide> solution;
 
 int n, k, nTag;
 vector <Image> images;
@@ -42,37 +40,49 @@ int main() {
 		images[i].tags.resize(nTag);
 
 		for (int j = 0; j < nTag; j++) {
-			cin >> images[i].tags[j];
+			string tag;
+			cin >> tag;
+			images[i].tags.insert(tag);
 		}
 	}
 
+	// adding horizontal slide
 	for (int i = 0; i < n; i++) {
 		if (images[i].isVertical) {
 			continue;
 		}
 
 		if (rand()%2) {
-			solution.push_back(images[i]);
+			Slide temp;
+			temp.isVertical = false;
+			temp.first = images[i];	
+			solution.push_back(temp);
 		}
 	}
 
 	vector <Image> vertical;
 
+	// select random vertical images
 	for (int i = 0; i < n; i++) {
 		if (images[i].isVertical && rand()%2) {
 			vertical.push_back(images[i]);
 		}
 	}
 
+	// check that vertcal is even
 	if (vertical.size() % 2 == 1) {
 		vertical.pop_back();
 	}
 
+	// shuffle vertical
 	random_shuffle(vertical.begin(), vertical.end());
 
-	vector <Slide> verticalSlide(vertical.size()/2);
+	solution.resize(vertical.size() / 2);
 
+	// merge vertical into slides
 	for (int i = 0; i < vertical.size(); i += 2) {
-		verticalSlide[i].first
+		Slide temp = vertical[i];
 	}
+
+
 }
