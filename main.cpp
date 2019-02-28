@@ -17,9 +17,11 @@ struct Image {
 
 struct Node {
     string name; // "0", "1", "2 3", "4"
+    vector<string> tags;
     vector<pair<int, int> > edges;
 }
 
 int main(){
+
     return 0;
 }
