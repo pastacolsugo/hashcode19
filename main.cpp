@@ -51,9 +51,14 @@ int calcEdgeValue(Node node1, Node node2){
     }
 }
 
+void input(){
+    
+}
+
 int main(){
 
     /*input*/
+    input();
     vector<Node> allOriz;//=blabla
     graph.resize(allOriz.size());
     vector<pair<int, pair<int, int> > >edges; // weight, {from, to}
