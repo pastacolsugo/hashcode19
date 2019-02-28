@@ -6,6 +6,7 @@
 #include <queue>
 #include <time.h>
 #include <stdlib.h>
+#include <unordered_set>
 
 using namespace std;
 
@@ -25,10 +26,9 @@ typedef struct Node {
 }Node;
 
 int calcEdgeValue(Node node1, Node node2){
-    unordered_set<string> n1tags(node1.tags.begin(), node1.tags.end());
     int commons = 0, node2t = 0, node1t = 0;
     for(string s : node2.tags) {
-    	if(n1tags.contains(s)) {
+    	if(node1.tags.find(s) != node1.tags.end()) {
     		commons++;
     	} else {
     		node2t++;
