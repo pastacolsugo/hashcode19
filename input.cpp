@@ -11,14 +11,16 @@
 using namespace std;
 
 struct Image {
-	int index;
+	vector <int> index;
 	bool isVertical;
 	unordered_set <string> tags;
 };
 
-typedef Slide Image;
+typedef Image Slide;
 
 vector <Slide> solution;
+vector <Slide> horizontal;
+vector <Image> vertical;
 
 int n, k, nTag;
 vector <Image> images;
@@ -35,9 +37,8 @@ int main() {
 		cin >> orientation;
 		cin >> nTag;
 
-		images[i].index = i;
+		images[i].index.push_back(i);
 		images[i].isVertical = (orientation == 'V');
-		images[i].tags.resize(nTag);
 
 		for (int j = 0; j < nTag; j++) {
 			string tag;
@@ -48,41 +49,63 @@ int main() {
 
 	// adding horizontal slide
 	for (int i = 0; i < n; i++) {
-		if (images[i].isVertical) {
-			continue;
-		}
-
-		if (rand()%2) {
-			Slide temp;
-			temp.isVertical = false;
-			temp.first = images[i];	
-			solution.push_back(temp);
+		if ((not images[i].isVertical) && rand()%10 <= 8) {
+			horizontal.push_back(images[i]);
 		}
 	}
 
-	vector <Image> vertical;
-
 	// select random vertical images
 	for (int i = 0; i < n; i++) {
-		if (images[i].isVertical && rand()%2) {
+		if (images[i].isVertical && rand()%10 <= 8) {
 			vertical.push_back(images[i]);
 		}
 	}
 
-	// check that vertcal is even
-	if (vertical.size() % 2 == 1) {
-		vertical.pop_back();
+	if (vertical.size() != 0) {
+		// check that vertical is even
+		if (vertical.size() % 2 == 1) {
+			vertical.pop_back();
+		}
+
+		// shuffle vertical
+		random_shuffle(vertical.begin(), vertical.end());
+
+		solution.resize(vertical.size() / 2);
+
+		// merge vertical into slides
+		for (int i = 0; i < vertical.size(); i += 2) {
+			solution[i].tags = vertical[i].tags;
+			solution[i].index = vertical[i].index;
+
+
+			solution[i].tags.insert(vertical[i+1].tags.begin(), vertical[i+1].tags.end());
+			solution[i].index.push_back(vertical[i].index[0]);
+		}
 	}
 
-	// shuffle vertical
-	random_shuffle(vertical.begin(), vertical.end());
+	int verticalNumber = solution.size();
 
-	solution.resize(vertical.size() / 2);
+	solution.resize(solution.size() + horizontal.size());
 
-	// merge vertical into slides
-	for (int i = 0; i < vertical.size(); i += 2) {
-		Slide temp = vertical[i];
+	for (int i=verticalNumber; i<solution.size(); i++) {
+		solution[i] = horizontal[i - verticalNumber];
 	}
 
+	random_shuffle(solution.begin(), solution.end());
+
+	cout << solution.size() << endl;
+
+	for (int i = 0; i < solution.size(); i++) {
+		cout << solution[i].index[0];
+
+		if (solution[i].index.size() == 2) {
+			cout << ' ' << solution[i].index[1];
+		}
+
+		cout << endl;
+	}
 
 }
+
+
+
