@@ -15,10 +15,14 @@ struct Image {
     vector <string> tags;
 };
 
-struct Node {
+typedef struct Node {
     string name; // "0", "1", "2 3", "4"
     vector<string> tags;
     vector<pair<int, int> > edges;
+}Node;
+
+int calcEdgeValue(Node node1, Node node2){
+    return 0;
 }
 
 int main(){
