@@ -51,15 +51,48 @@ int calcEdgeValue(Node node1, Node node2){
     }
 }
 
-void input(){
-    
+vector<Image> input(){
+    int n;
+
+    cin >> n;
+
+    vector<Image> images(n);
+
+    srand(time(NULL));
+
+    for (int i = 0; i < n; i++) {
+        cin >> orientation;
+        cin >> nTag;
+
+        images[i].index = i;
+        images[i].isVertical = (orientation == 'V');
+        
+        for (int j = 0; j < nTag; j++) {
+            string tag;
+            cin >> tag;
+            images[i].tags.insert(tag);
+        }
+    }
+    return images;
 }
 
 int main(){
 
     /*input*/
-    input();
-    vector<Node> allOriz;//=blabla
+    vector<Image> inp = input();
+    vector<Image> vert;
+    vector<Image> oriz;
+    for(auto i : inp){
+        if(i.isVertical()){
+            vert.push_back(i);
+        } else {
+            oriz.push_back(i);
+        }
+    }
+
+    vector<Node> allOriz = blabla(vert);
+    for(auto i : oriz) allOriz.push_back(i);
+
     graph.resize(allOriz.size());
     vector<pair<int, pair<int, int> > >edges; // weight, {from, to}
     for(int i = 0; i < n; i++){
